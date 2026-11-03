@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera('Registrar entrada')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container pb-5" style="max-width: 560px">
+    <h1 class="h3 mb-1">Registrar entrada</h1>
+    <p class="text-muted">
+        <span th:text="${nombrePlanta}">Planta baja</span> · cochera <strong th:text="${numero}">1</strong> · zona <span th:text="${zona}">A</span>
+        <span th:if="${!tipoVehiculos.isEmpty()}" th:text="'(' + ${tipoVehiculos} + ')'">(autos)</span>
+        · $<span th:text="${tarifa}">1500</span> por hora
+    </p>
+    <p th:if="${abono != null}" class="alert alert-warning">
+        Esta cochera tiene abono de <strong th:text="${abono}">socio</strong>.
+    </p>
+
+    <form method="post" class="card card-body shadow-sm mb-3" th:action="@{/admin/playa/{n}/entrada(n=${numero})}">
+        <input type="hidden" name="planta" th:value="${planta}">
+        <h2 class="h6">Vehículo ya registrado</h2>
+        <p th:if="${opciones.isEmpty()}" class="text-muted mb-0">No hay vehículos registrados que puedan entrar.</p>
+        <th:block th:unless="${opciones.isEmpty()}">
+            <label class="form-label" for="patente">Patente</label>
+            <select class="form-select mb-3" id="patente" name="patente" required>
+                <option th:each="o : ${opciones}" th:value="${o.valor()}" th:text="${o.etiqueta()}">Vehiculo</option>
+            </select>
+            <div class="text-end"><button class="btn btn-success">Registrar entrada</button></div>
+        </th:block>
+    </form>
+
+    <div class="card card-body shadow-sm mb-3" th:if="${abono == null}">
+        <h2 class="h6">Vehículo nuevo</h2>
+        <p class="small text-muted">Se registra el vehículo.</p>
+
+        <!-- Paso 1: el tipo (viene sugerido por la zona). Al cambiarlo se recarga la pantalla con sus marcas. -->
+        <form method="get" class="d-flex align-items-end gap-2 mb-3" th:action="@{/admin/playa/{n}(n=${numero})}">
+            <div class="flex-grow-1"><label class="form-label" for="n-tipo">Tipo</label>
+                <select class="form-select" id="n-tipo" name="idTipo" required>
+                    <option th:each="t : ${tipos}" th:value="${t.valor()}" th:text="${t.etiqueta()}"
+                            th:selected="${t.valor() == idTipoNuevo}">Auto</option>
+                </select></div>
+            <button class="btn btn-outline-primary">Cambiar tipo</button>
+        </form>
+
+        <!-- Paso 2: el resto, con las marcas de ese tipo -->
+        <form method="post" th:action="@{/admin/playa/{n}/entrada(n=${numero})}">
+            <input type="hidden" name="planta" th:value="${planta}">
+            <input type="hidden" name="nuevo" value="si">
+            <input type="hidden" name="idTipo" th:value="${idTipoNuevo}">
+            <div class="row g-2 mb-3">
+                <div class="col-6"><label class="form-label" for="n-patente">Patente</label>
+                    <input class="form-control" id="n-patente" name="patente" required></div>
+                <div class="col-6"><label class="form-label" for="n-marca">Marca</label>
+                    <select class="form-select" id="n-marca" name="idMarca" required>
+                        <option value="" disabled selected>Elegí la marca</option>
+                        <option th:each="mc : ${marcas}" th:value="${mc.valor()}" th:text="${mc.etiqueta()}">Fiat</option>
+                    </select></div>
+                <div class="col-6"><label class="form-label" for="n-dim">Dimensiones</label>
+                    <input class="form-control" id="n-dim" name="dimensiones" required></div>
+                <div class="col-6"><label class="form-label" for="n-socio">Socio</label>
+                    <select class="form-select" id="n-socio" name="dniPropietario">
+                        <option value="">No tiene</option>
+                        <option th:each="s : ${socios}" th:value="${s.valor()}" th:text="${s.etiqueta()}">Socio</option>
+                    </select></div>
+            </div>
+            <div class="text-end"><button class="btn btn-success">Registrar y entrar</button></div>
+        </form>
+    </div>
+
+    <a class="btn btn-outline-secondary" th:href="@{/admin/playa(planta=${planta})}">Volver a la playa</a>
+</main>
+</body>
+</html>

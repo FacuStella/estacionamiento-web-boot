@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera(${accion.etiqueta()})}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container pb-5" style="max-width: 560px">
+    <h1 class="h3 mb-1" th:text="${accion.etiqueta()}">Accion</h1>
+    <p class="text-muted" th:text="${ent.singular()} + ' ' + ${clave}">el socio 1</p>
+    <p th:if="${opciones.isEmpty()}" class="alert alert-secondary">No hay opciones disponibles para esta acción.</p>
+    <form method="post" class="card card-body shadow-sm" th:unless="${opciones.isEmpty()}"
+          th:action="@{/admin/{e}/{c}/accion/{a}(e=${ent.id()},c=${clave},a=${accion.id()})}">
+        <label class="form-label" for="valor">Elegí una opción</label>
+        <select class="form-select mb-3" id="valor" name="valor" required>
+            <option th:each="o : ${opciones}" th:value="${o.valor()}" th:text="${o.etiqueta()}">Opcion</option>
+        </select>
+        <div class="d-flex gap-2 justify-content-end">
+            <a class="btn btn-outline-secondary" th:href="@{/admin/{e}(e=${ent.id()})}">Cancelar</a>
+            <button class="btn btn-success">Aceptar</button>
+        </div>
+    </form>
+    <a th:if="${opciones.isEmpty()}" class="btn btn-outline-secondary" th:href="@{/admin/{e}(e=${ent.id()})}">Volver</a>
+</main>
+</body>
+</html>

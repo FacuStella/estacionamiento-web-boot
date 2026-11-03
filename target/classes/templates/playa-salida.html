@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera('Registrar salida')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container pb-5" style="max-width: 560px">
+    <h1 class="h3 mb-1">Registrar salida</h1>
+    <p class="text-muted">
+        <span th:text="${nombrePlanta}">Planta baja</span> · cochera <strong th:text="${numero}">1</strong> · zona <span th:text="${zona}">A</span>
+        · $<span th:text="${tarifa}">1500</span> por hora
+    </p>
+    <form method="post" class="card card-body shadow-sm" th:action="@{/admin/playa/{n}/salida(n=${numero})}">
+        <input type="hidden" name="planta" th:value="${planta}">
+        <dl class="row mb-3">
+            <dt class="col-4">Vehículo</dt>
+            <dd class="col-8"><strong th:text="${patente}">AAA111</strong> · <span th:text="${vehiculo}">Fiat · Auto</span></dd>
+            <dt class="col-4">Socio</dt>
+            <dd class="col-8" th:text="${socio.isEmpty()} ? 'No (de paso)' : ${socio}">No</dd>
+            <dt class="col-4">Entrada</dt>
+            <dd class="col-8" th:text="${entrada}">01/11/2026 10:00</dd>
+        </dl>
+        <p class="small text-muted">Se cobra por hora o fracción. Los socios tienen descuento, y si la cochera es de su abono no pagan.</p>
+        <div class="d-flex gap-2 justify-content-end">
+            <a class="btn btn-outline-secondary" th:href="@{/admin/playa(planta=${planta})}">Cancelar</a>
+            <button class="btn btn-danger">Registrar salida y cobrar</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

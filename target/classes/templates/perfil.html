@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera('Mi perfil')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container pb-5" style="max-width: 560px">
+    <h1 class="h3 mb-3">Mi perfil</h1>
+    <dl class="row card card-body shadow-sm m-0">
+        <dt class="col-sm-4">Nombre</dt><dd class="col-sm-8" th:text="${s.get('nombre')}">-</dd>
+        <dt class="col-sm-4">DNI</dt><dd class="col-sm-8" th:text="${s.get('dni')}">-</dd>
+        <dt class="col-sm-4">Dirección</dt><dd class="col-sm-8" th:text="${s.get('direccion') ?: '—'}">-</dd>
+        <dt class="col-sm-4">Teléfono</dt><dd class="col-sm-8" th:text="${s.get('telefono') ?: '—'}">-</dd>
+        <dt class="col-sm-4">Usuario</dt><dd class="col-sm-8" th:text="${s.get('usuario')?.get('username')}">-</dd>
+        <dt class="col-sm-4">Socio desde</dt><dd class="col-sm-8 mb-0" th:text="${s.get('fechaIngreso')}">-</dd>
+    </dl>
+</main>
+</body>
+</html>

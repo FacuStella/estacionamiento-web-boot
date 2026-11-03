@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera('Error')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container" style="max-width: 640px">
+    <div class="alert alert-danger" role="alert">
+        <h1 class="h5">No se pudo completar la operación</h1>
+        <p class="mb-0" th:text="${mensaje != null} ? ${mensaje} : 'Ocurrió un error inesperado.'">mensaje</p>
+    </div>
+    <a class="btn btn-outline-secondary" th:href="@{/}">Volver al inicio</a>
+</main>
+</body>
+</html>

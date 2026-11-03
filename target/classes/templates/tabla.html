@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera(${titulo})}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container pb-5">
+    <h1 class="h3 mb-3" th:text="${titulo}">Listado</h1>
+    <div th:replace="~{fragmentos :: tabla(${columnas}, ${filas})}"></div>
+</main>
+</body>
+</html>

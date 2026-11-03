@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera('Estadías')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container pb-5">
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+    <h1 class="h3 mb-1">Estadías</h1>
+    <a class="btn btn-outline-success btn-sm ms-auto" th:href="@{/admin/estadias.csv}"
+           th:unless="${filas.isEmpty()}">Exportar CSV</a>
+    </div>
+    <p class="text-muted">Cada entrada y salida de un vehículo, de la más nueva a la más vieja.
+        Hacé clic en el título de una columna para ordenar por ella; otro clic invierte el orden.</p>
+
+    <p th:if="${filas.isEmpty()}" class="alert alert-secondary">Todavía no hay registros.</p>
+    <div th:unless="${filas.isEmpty()}" class="table-responsive">
+        <table class="table table-hover bg-white border">
+            <thead class="table-light">
+                <tr>
+                    <!-- Cada titulo es un link: si ya es la columna ordenada invierte el orden, si no empieza de mayor a menor -->
+                    <th th:each="c, i : ${columnas}" class="text-nowrap"
+                        th:attr="aria-sort=${orden == i.index} ? (${dir == 'asc'} ? 'ascending' : 'descending') : 'none'">
+                        <a class="link-dark text-decoration-none"
+                           th:href="@{/admin/estadias(orden=${i.index},dir=${orden == i.index and dir == 'desc'} ? 'asc' : 'desc')}">
+                            <span th:text="${c.titulo()}">Columna</span>
+                            <span th:if="${orden == i.index}" th:text="${dir == 'desc'} ? '▼' : '▲'" aria-hidden="true">▼</span>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="f : ${filas}"><td th:each="x : ${f.celdas()}" th:text="${x}">dato</td></tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

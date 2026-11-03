@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera('Cambiar contraseña')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container pb-5" style="max-width: 480px">
+    <h1 class="h3 mb-3">Cambiar contraseña</h1>
+    <p th:if="${obligatorio}" class="alert alert-warning">
+        Ingresaste con una contraseña temporal. Elegí una nueva para seguir.
+    </p>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+
+    <form method="post" class="card card-body shadow-sm" th:action="@{/cuenta/clave}">
+        <div class="mb-3">
+            <label class="form-label" for="actual" th:text="${obligatorio} ? 'Contraseña temporal (la del mail)' : 'Contraseña actual'">Contraseña actual</label>
+            <input class="form-control" id="actual" name="actual" type="password" autocomplete="current-password" required autofocus>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="nueva">Contraseña nueva (mínimo 6 caracteres)</label>
+            <input class="form-control" id="nueva" name="nueva" type="password" autocomplete="new-password" minlength="6" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="repetida">Repetí la contraseña nueva</label>
+            <input class="form-control" id="repetida" name="repetida" type="password" autocomplete="new-password" minlength="6" required>
+        </div>
+        <div class="d-flex gap-2 justify-content-end">
+            <a th:unless="${obligatorio}" class="btn btn-outline-secondary" th:href="@{/}">Cancelar</a>
+            <button class="btn btn-success">Cambiar contraseña</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

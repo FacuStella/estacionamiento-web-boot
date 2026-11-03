@@ -1,0 +1,68 @@
+/* ---------- Playa: una planta dibujada como el piso de un estacionamiento ---------- */
+
+/* El piso (asfalto) que contiene las zonas */
+.playa-piso{background:#495057;border-radius:.75rem;padding:1rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start}
+.playa-acceso{flex:1 1 100%;color:#f8f9fa;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;
+  border:2px dashed rgba(255,255,255,.45);border-radius:.4rem;padding:.3rem .75rem;text-align:center}
+
+/* Cada zona es un area con su color */
+.zona{border-radius:.5rem;padding:1rem;max-width:100%;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.zona-color-0{background:#8fb3e0}
+.zona-color-1{background:#e2c26a}
+.zona-color-2{background:#b39ddb}
+.zona-color-3{background:#7cc4d3}
+.zona-color-4{background:#c8b08a}
+.zona-color-5{background:#a3adbf}
+.zona-dibujo{overflow-x:auto;padding-bottom:2px}
+
+/* Modulo: hilera que mira hacia abajo, calle, hilera que mira hacia arriba */
+.modulo + .modulo{margin-top:1rem;padding-top:1rem;border-top:3px solid rgba(255,255,255,.9)}
+.hilera{display:flex;width:max-content}
+.calle{position:relative;height:30px;min-width:100%}
+.calle::before{content:"";position:absolute;left:4px;right:4px;top:50%;border-top:2px dashed rgba(255,255,255,.9)}
+.calle-flecha{position:absolute;left:6px;top:50%;transform:translateY(-55%);color:#fff;font-size:1.1rem;font-weight:700;
+  line-height:1}
+
+/* Tamaño de las cocheras segun la zona */
+.cochera-auto{--ancho:46px;--largo:76px}
+.cochera-moto{--ancho:30px;--largo:54px}
+.cochera-camioneta{--ancho:60px;--largo:94px}
+
+/* Una cochera: lineas blancas pintadas en tres lados, abierta hacia la calle */
+.cochera{position:relative;display:block;flex:none;width:var(--ancho);height:var(--largo);
+  border:3px solid #fff;margin-left:-3px;text-decoration:none}
+.cochera:first-child{margin-left:0}
+.hilera-arriba .cochera{border-bottom:0}
+.hilera-abajo .cochera{border-top:0}
+.cochera.libre{background:#d1e7dd}
+.cochera.abono{background:repeating-linear-gradient(45deg,#f8d7da 0 6px,#f1aeb5 6px 9px)}
+.cochera.ocupado{background:#f8d7da}
+a.cochera:hover,a.cochera:focus-visible{z-index:1;outline:3px solid #212529;outline-offset:1px}
+
+/* Numero pintado al fondo de la cochera */
+.cochera-numero{position:absolute;left:0;right:0;text-align:center;font-size:.7rem;font-weight:700;line-height:1}
+.hilera-arriba .cochera-numero{top:4px}
+.hilera-abajo .cochera-numero{bottom:4px}
+.cochera.libre .cochera-numero{color:#0f5132}
+.cochera.abono .cochera-numero,.cochera.ocupado .cochera-numero{color:#842029}
+
+/* Vehiculo estacionado (visto desde arriba), con el parabrisas hacia la calle */
+.vehiculo{position:absolute;left:50%;transform:translateX(-50%);width:70%;height:62%;
+  background:#dc3545;border-radius:30% / 16%;box-shadow:inset 0 0 0 2px rgba(0,0,0,.15)}
+.hilera-arriba .vehiculo{bottom:5px}
+.hilera-abajo .vehiculo{top:5px}
+.vehiculo::before{content:"";position:absolute;left:14%;right:14%;height:17%;background:rgba(255,255,255,.6);border-radius:3px}
+.hilera-arriba .vehiculo::before{bottom:16%}
+.hilera-abajo .vehiculo::before{top:16%}
+.cochera-moto .vehiculo{width:42%;border-radius:45% / 20%}
+
+/* Leyenda */
+.leyenda{display:inline-flex;align-items:center;gap:.35rem}
+.leyenda-cochera{display:inline-block;width:1.1rem;height:1.1rem;border:2px solid #adb5bd;border-radius:.15rem}
+.leyenda-cochera.libre{background:#d1e7dd}
+.leyenda-cochera.abono{background:repeating-linear-gradient(45deg,#f8d7da 0 3px,#f1aeb5 3px 5px)}
+.leyenda-cochera.ocupado{background:#dc3545;border-color:#dc3545}
+
+/* Tablita de zonas: color, nombre y precio */
+.tabla-zonas td{padding:.1rem .5rem;background:transparent}
+.leyenda-zona{display:inline-block;width:1rem;height:1rem;border-radius:.2rem;vertical-align:-3px;margin-right:.4rem}

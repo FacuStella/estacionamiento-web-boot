@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera('Playa')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container-fluid px-3 px-lg-4 pb-5">
+    <div class="d-flex flex-wrap align-items-end gap-3 mb-3">
+        <h1 class="h3 mb-0">Playa</h1>
+        <form method="get" th:action="@{/admin/playa}" class="d-flex align-items-end gap-2" th:unless="${plantas.isEmpty()}">
+            <div>
+                <label class="form-label small mb-1" for="planta">Planta</label>
+                <select class="form-select form-select-sm" id="planta" name="planta">
+                    <option th:each="p : ${plantas}" th:value="${p.numero()}" th:selected="${p == actual}"
+                            th:text="${p.nombre()} + ' (' + ${p.libres()} + ' libres)'">Planta baja</option>
+                </select>
+            </div>
+            <button class="btn btn-sm btn-primary">Ver</button>
+        </form>
+        <div class="ms-auto small">
+            <strong th:text="${total}">0</strong> cocheras ·
+            <strong th:text="${ocupados}">0</strong> ocupadas ·
+            <strong th:text="${libres}">0</strong> libres
+        </div>
+    </div>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+
+    <p th:if="${plantas.isEmpty()}" class="alert alert-secondary">Todavía no hay zonas.</p>
+
+    <th:block th:if="${actual != null}">
+        <div class="d-flex flex-wrap align-items-start gap-3 mb-2 small">
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                <h2 class="h5 mb-0 me-2" th:text="${actual.nombre()}">Planta baja</h2>
+                <span class="leyenda"><span class="leyenda-cochera libre"></span>Libre</span>
+                <span class="leyenda"><span class="leyenda-cochera abono"></span>Abono de un socio</span>
+                <span class="leyenda"><span class="leyenda-cochera ocupado"></span>Ocupada</span>
+                <span class="text-muted">Clic en una cochera libre para registrar una entrada, o en una ocupada para la salida.</span>
+            </div>
+            <table class="table table-sm table-borderless w-auto mb-0 ms-auto tabla-zonas">
+                <tr th:each="z : ${actual.zonas()}">
+                    <td><span th:class="'leyenda-zona ' + ${z.color()}"></span><strong th:text="'Zona ' + ${z.letra()}">Zona A</strong></td>
+                    <td th:text="${z.tipo()}">Autos</td>
+                    <td class="text-end" th:text="'$' + ${z.tarifaHora()} + '/h'">$1500/h</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="playa-piso">
+            <div class="playa-acceso">⇅ Acceso y rampas</div>
+            <section th:each="z : ${actual.zonas()}" th:class="'zona ' + ${z.color()} + ' ' + ${z.tamano()}"
+                     th:attr="aria-label='Zona ' + ${z.letra()} + ' · ' + ${z.tipo()}">
+                <p th:if="${z.modulos().isEmpty()}" class="small mb-0">Sin cocheras</p>
+                <div class="zona-dibujo" th:unless="${z.modulos().isEmpty()}">
+                    <div class="modulo" th:each="md : ${z.modulos()}">
+                        <div class="hilera hilera-arriba">
+                            <th:block th:each="l : ${md.arriba()}"><a th:replace="~{fragmentos :: cochera(${l})}"></a></th:block>
+                        </div>
+                        <div class="calle"><span class="calle-flecha">→</span></div>
+                        <div class="hilera hilera-abajo" th:unless="${md.abajo().isEmpty()}">
+                            <th:block th:each="l : ${md.abajo()}"><a th:replace="~{fragmentos :: cochera(${l})}"></a></th:block>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </th:block>
+</main>
+</body>
+</html>

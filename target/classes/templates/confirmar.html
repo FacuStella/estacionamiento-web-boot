@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos :: cabecera(${accion.etiqueta()})}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragmentos :: barra}"></nav>
+<main class="container pb-5" style="max-width: 560px">
+    <form method="post" class="card card-body shadow-sm"
+          th:action="@{/admin/{e}/{c}/accion/{a}(e=${ent.id()},c=${clave},a=${accion.id()})}">
+        <h1 class="h4" th:text="${accion.etiqueta()} + ' ' + ${ent.singular()} + ' ' + ${clave} + '?'">¿Confirmás?</h1>
+        <p class="text-muted">Esta operación se aplica de inmediato.</p>
+        <div class="d-flex gap-2 justify-content-end">
+            <a class="btn btn-outline-secondary" th:href="@{/admin/{e}(e=${ent.id()})}">Cancelar</a>
+            <button class="btn btn-danger" th:text="${accion.etiqueta()}">Confirmar</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>
